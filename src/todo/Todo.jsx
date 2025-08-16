@@ -3,18 +3,14 @@ import "./Todo.css";
 import TodoForm from "../components/TodoForm";
 import TodoList from "../components/TodoList";
 import TodoDate from "../components/TodoDate";
+import { getLocalStorageData, setLocalStorageData } from "../components/TodoLocalStorage";
 
 const Todo = () => {
-  const [task, setTask] = useState([]);
+  const [task, setTask] = useState(getLocalStorageData);
 
   const handleFormSubmit = (inputValue) => {
     const {id, content, checked} = inputValue;
     if (!content) return;
-
-    // if (task.includes(inputValue)) {
-    //   alert("Duplicate Value!");
-    //   return;
-    // }
 
     const contentMatched = task.find((currTask) => currTask.content === content);
     if (contentMatched) return;
@@ -24,6 +20,9 @@ const Todo = () => {
     val = val.replace(/\s+/g, " ");
     setTask([...task, {id, content, checked}]);
   };
+
+  // set data to local storage
+  setLocalStorageData(task);
 
   const handleDelete = (value) => {
     const updatedTask = task.filter((currVal) => currVal.content !== value);
