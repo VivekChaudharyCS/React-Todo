@@ -1,11 +1,12 @@
 import { MdCheck, MdDeleteForever } from "react-icons/md";
 
-const TodoList = ({ index, currTask, onDeleteTask }) => {
+const TodoList = ({ currTask, checked, onDeleteTask, onCheckedTask }) => {
+  console.log(currTask);
 
   return (
-    <li key={index} className="todo-item">
-      <span>{currTask}</span>
-      <button className="check-btn">
+    <li className="todo-item">
+      <span className={checked ? "checkList" : "notCheckList"}>{currTask}</span>
+      <button className="check-btn" onClick={() => onCheckedTask(currTask)}>
         <MdCheck />
       </button>
       <button className="delete-btn" onClick={() => onDeleteTask(currTask)}>

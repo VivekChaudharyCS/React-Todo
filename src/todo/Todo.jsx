@@ -8,21 +8,39 @@ const Todo = () => {
   const [task, setTask] = useState([]);
 
   const handleFormSubmit = (inputValue) => {
-    if (!inputValue) return;
-    if (task.includes(inputValue)) {
-      alert("Duplicate Value!");
-      return;
-    }
-    let val = inputValue.trim();
+    const {id, content, checked} = inputValue;
+    if (!content) return;
+
+    // if (task.includes(inputValue)) {
+    //   alert("Duplicate Value!");
+    //   return;
+    // }
+
+    const contentMatched = task.find((currTask) => currTask.content === content);
+    if (contentMatched) return;
+
+    let val = content.trim();
     if (!val) return;
     val = val.replace(/\s+/g, " ");
-    setTask([...task, val]);
+    setTask([...task, {id, content, checked}]);
   };
 
   const handleDelete = (value) => {
-    const updatedTask = task.filter((currVal) => currVal !== value);
+    const updatedTask = task.filter((currVal) => currVal.content !== value);
     setTask(updatedTask);
   };
+
+  const handleChecked = (value) => {
+    const updatedTask = task.map((currTask) => {
+      if (currTask.content === value) {
+        return {...currTask, checked: !currTask.checked};
+      }
+      else {
+        return currTask;
+      }
+    });
+    setTask(updatedTask);
+  }
 
   const handleClear = () => {
     setTask([]);
@@ -34,12 +52,14 @@ const Todo = () => {
       <TodoForm onAddTask={handleFormSubmit} />
       <section className="myUnOrdList">
         <ul>
-          {task.map((currTask, index) => {
+          {task.map((currTask) => {
             return (
               <TodoList
-                index={index}
-                currTask={currTask}
+                key={currTask.id}
+                currTask={currTask.content}
+                checked={currTask.checked}
                 onDeleteTask={handleDelete}
+                onCheckedTask={handleChecked}
               />
             );
           })}
