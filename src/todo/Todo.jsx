@@ -18,7 +18,7 @@ const Todo = () => {
     let val = content.trim();
     if (!val) return;
     val = val.replace(/\s+/g, " ");
-    setTask([...task, {id, content, checked}]);
+    setTask([{id, content, checked}, ...task]);
   };
 
   // set data to local storage
